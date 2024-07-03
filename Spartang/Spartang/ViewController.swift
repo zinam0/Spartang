@@ -4,8 +4,10 @@
 //
 //  Created by 남지연 on 7/2/24.
 //
+
 import UIKit
 import SnapKit
+
 class ViewController: UIViewController {
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -24,32 +26,52 @@ class ViewController: UIViewController {
         stackView.spacing = 10
         return stackView
     }()
-    let tabs = ["베스트", "탕", "사이드", "소주/맥주", "음료"]
-    let tabColors: [UIColor] = [.red, .blue, .yellow, .green, .orange]
-    var contentLabels: [UILabel] = []
+    let tabs = ["장바구니", "안주", "탕", "술", "음료"]
+    let images: [[String?]] = [
+        [],
+        ["a1", "a2", "a3", "a4", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
+        ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", nil, nil, nil, nil, nil, nil, nil, nil],
+        ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "c12", "c13", "c14", "c15", nil],
+        ["d1", "d2", "d3", "d4", "d5", "d6", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
+    ]
+    var selectedTabIndex = 0
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.reuseIdentifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        return collectionView
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        view.backgroundColor = .white
     }
     func setupViews() {
+        view.backgroundColor = .white
+        // Title Label
         view.addSubview(titleLabel)
-        view.addSubview(scrollView)
-        scrollView.addSubview(stackView)
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
             make.left.equalTo(view).offset(20)
         }
+        // Scroll View
+        view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.left.equalTo(view).offset(20)
             make.right.equalTo(view).offset(-20)
             make.height.equalTo(50)
         }
+        scrollView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView)
-            make.height.equalTo(scrollView)
+            make.edges.equalToSuperview()
         }
+        // Tab Buttons
         for (index, tab) in tabs.enumerated() {
             let tabButton = UIButton()
             tabButton.setTitle(tab, for: .normal)
@@ -65,26 +87,68 @@ class ViewController: UIViewController {
                 make.width.equalTo(100)
             }
             stackView.addArrangedSubview(tabButton)
-
-            let contentLabel = UILabel()
-            contentLabel.text = "\(tab) 컬렉션들"
-            contentLabel.backgroundColor = tabColors[index]
-            contentLabel.textAlignment = .center
-            contentLabel.isHidden = true
-            view.addSubview(contentLabel)
-            contentLabel.snp.makeConstraints { make in
-                make.top.equalTo(scrollView.snp.bottom).offset(20)
-                make.left.equalTo(view).offset(20)
-                make.right.equalTo(view).offset(-20)
-                make.height.equalTo(100)
-            }
-            contentLabels.append(contentLabel)
+        }
+        // Collection View
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(scrollView.snp.bottom).offset(20)
+            make.left.equalTo(view).offset(20)
+            make.right.equalTo(view).offset(-20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
     }
     @objc func tabTapped(_ sender: UIButton) {
-        for label in contentLabels {
-            label.isHidden = true
-        }
-        contentLabels[sender.tag].isHidden = false
+        selectedTabIndex = sender.tag
+        collectionView.reloadData()
     }
 }
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return images[selectedTabIndex].count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseIdentifier, for: indexPath) as! ImageCell
+        if let imageName = images[selectedTabIndex][indexPath.item], !imageName.isEmpty {
+            cell.imageView.image = UIImage(named: imageName)
+        } else {
+            cell.imageView.image = UIImage(named: "defaultImage") // Placeholder image or white background
+        }
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width / 2 // Two cells per row
+        return CGSize(width: width, height: width)
+    }
+}
+class ImageCell: UICollectionViewCell {
+    static let reuseIdentifier = "ImageCell"
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        layer.borderColor = UIColor.white.cgColor
+        layer.borderWidth = 5
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+
+
+
+
+
+

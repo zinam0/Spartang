@@ -56,9 +56,9 @@
 		75DE9BEC2C33C37D006FBF64 /* Spartang */ = {
 			isa = PBXGroup;
 			children = (
+				75DE9BF12C33C37D006FBF64 /* ViewController.swift */,
 				75DE9BED2C33C37D006FBF64 /* AppDelegate.swift */,
 				75DE9BEF2C33C37D006FBF64 /* SceneDelegate.swift */,
-				75DE9BF12C33C37D006FBF64 /* ViewController.swift */,
 				75DE9BF62C33C381006FBF64 /* Assets.xcassets */,
 				75DE9BF82C33C381006FBF64 /* LaunchScreen.storyboard */,
 				75DE9BFB2C33C381006FBF64 /* Info.plist */,
