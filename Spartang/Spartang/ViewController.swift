@@ -8,6 +8,7 @@ import UIKit
 import SnapKit
 
 
+
 class ViewController: UIViewController {
     
     let titleLabel: UILabel = {
@@ -41,15 +42,13 @@ class ViewController: UIViewController {
         ["d1", "d2", "d3", "d4", "d5", "d6", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
     ]
     
-    let tabColors: [UIColor] = [.red, .blue, .green, .orange]
-    
     var contentLabels: [UILabel] = []
     
     var selectedTabIndex = 0
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical //
+        layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
