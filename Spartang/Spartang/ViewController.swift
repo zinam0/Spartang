@@ -6,6 +6,25 @@
 //
 import UIKit
 import SnapKit
+import SwiftUI
+
+class MyViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let swiftUIView = ContentView()
+        let hostingController = UIHostingController(rootView: swiftUIView)
+        
+        addChild(hostingController)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(hostingController.view)
+        hostingController.didMove(toParent: self)
+        
+        hostingController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
 
 class ViewController: UIViewController {
     
@@ -320,4 +339,5 @@ class ModalViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 }
+
 
