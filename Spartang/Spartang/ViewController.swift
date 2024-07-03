@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  Spartang
 //
-//  Created by 남지연 on 7/2/24.
+//  Created by 차해라 on 7/2/24.
 //
 import UIKit
 import SnapKit
@@ -190,7 +190,7 @@ class ModalViewController: UIViewController {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .lightGray
+        imageView.backgroundColor = .white
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
