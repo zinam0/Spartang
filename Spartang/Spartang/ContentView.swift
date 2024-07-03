@@ -31,39 +31,34 @@ struct TabBarView: View {
     @Namespace var namespace
     var tabBarOptions: [String] = ["Cart", "안주", "탕", "술", "음료"]
     var body: some View {
-//        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 0) {
-                ForEach(Array(zip(self.tabBarOptions.indices,
-                                  self.tabBarOptions)),
-                        id: \.0,
-                        content: {
-                    index, name in
-                    TabBarItem(currentTab: self.$currentTab,
-                               namespace: namespace.self,
-                    tabBarItemName: name,
-                               tab: index)
-                     
-                }
-                        )
-                    .frame(maxWidth: .infinity)
-                    .background(Color.white)
-                    .frame(width: 80)
-                    .frame(height: 80)
-                 
+        //        ScrollView(.horizontal, showsIndicators: false) {
+        HStack(spacing: 0) {
+            ForEach(Array(zip(self.tabBarOptions.indices,
+                              self.tabBarOptions)),
+                    id: \.0,
+                    content: {
+                index, name in
+                TabBarItem(currentTab: self.$currentTab,
+                           namespace: namespace.self,
+                           tabBarItemName: name,
+                           tab: index)
+                
             }
-//            .padding(.horizontal)
+            )
+            .frame(maxWidth: .infinity)
+            .background(Color.white)
+            .frame(width: 80)
+            .frame(height: 80)
+            
         }
-//        .background(Color.white)
-//        .frame(height: 80)
-//        .edgesIgnoringSafeArea(.all)
-//    }
+    }
 }
 
 struct TabBarItem: View {
     @Binding var currentTab: Int
     let namespace: Namespace.ID
-
-
+    
+    
     var tabBarItemName: String
     var tab: Int
     
