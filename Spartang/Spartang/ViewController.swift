@@ -140,7 +140,11 @@ class ViewController: UIViewController {
 
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        if selectedTabIndex == 0 {
+            return 1
+        } else {
+            return images[selectedTabIndex].count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -149,16 +153,26 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseIdentifier, for: indexPath) as! ImageCell
-        if let imageName = images[selectedTabIndex][indexPath.item], !imageName.isEmpty {
-            cell.imageView.image = UIImage(named: imageName)
+        
+        if selectedTabIndex == 0 {
+            cell.imageView.image = UIImage(named: "cartImage")
         } else {
-            cell.imageView.image = UIImage(named: "defaultImage")
+            if let imageName = images[selectedTabIndex][indexPath.item], !imageName.isEmpty {
+                cell.imageView.image = UIImage(named: imageName)
+            } else {
+                cell.imageView.image = UIImage(named: "defaultImage")
+            }
         }
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width / 2
-        return CGSize(width: width, height: width)
+        if selectedTabIndex == 0 {
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.width)
+        } else {
+            let width = collectionView.frame.width / 2
+            return CGSize(width: width, height: width)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -189,10 +203,13 @@ class ImageCell: UICollectionViewCell {
         layer.borderWidth = 5
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }
+
 
 class ModalViewController: UIViewController {
     var imageName: String?
