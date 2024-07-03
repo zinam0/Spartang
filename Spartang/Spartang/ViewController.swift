@@ -60,6 +60,7 @@ class ViewController: UIViewController {
         return collectionView
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -230,60 +231,79 @@ class ModalViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    let addToCartButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("담기", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 10
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if let sheetPresentationController = sheetPresentationController {
             sheetPresentationController.detents = [.medium(), .large()]
             setupViews()
         }
-    }
-    func setupViews() {
-        view.backgroundColor = .white
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.backgroundColor = .lightGray
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        if let imageName = imageName,
-           let image = UIImage(named: imageName) {
-            imageView.image = image
+        func setupViews() {
+            view.backgroundColor = .white
+            let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+            imageView.backgroundColor = .lightGray
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            
+            if let imageName = imageName,
+               let image = UIImage(named: imageName) {
+                imageView.image = image
+            }
+            
+            view.addSubview(imageView)
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+            imageView.widthAnchor.constraint(equalToConstant: view.frame.width / 2).isActive = true
+            imageView.heightAnchor.constraint(equalToConstant: view.frame.width / 2).isActive = true
+            // Name label setup
+            view.addSubview(nameLabel)
+            nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
+            nameLabel.text = productName
+            // Price label setup
+            view.addSubview(priceLabel)
+            priceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8).isActive = true
+            priceLabel.text = "\(price)원"
+            // Quantity label setup
+            view.addSubview(quantityLabel)
+            quantityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            quantityLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16).isActive = true
+            quantityLabel.text = "\(quantity)"
+            // Minus button setup
+            view.addSubview(minusButton)
+            minusButton.centerYAnchor.constraint(equalTo: quantityLabel.centerYAnchor).isActive = true
+            minusButton.trailingAnchor.constraint(equalTo: quantityLabel.leadingAnchor, constant: -16).isActive = true
+            minusButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+            minusButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            minusButton.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
+            // Plus button setup
+            view.addSubview(plusButton)
+            plusButton.centerYAnchor.constraint(equalTo: quantityLabel.centerYAnchor).isActive = true
+            plusButton.leadingAnchor.constraint(equalTo: quantityLabel.trailingAnchor, constant: 16).isActive = true
+            plusButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+            plusButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            plusButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
+            view.addSubview(addToCartButton)
+            addToCartButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            addToCartButton.topAnchor.constraint(equalTo: quantityLabel.bottomAnchor, constant: 20).isActive = true
+            addToCartButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+            addToCartButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            addToCartButton.addTarget(self, action: #selector(addToCart), for: .touchUpInside)
         }
         
-        view.addSubview(imageView)
-        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: view.frame.width / 2).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: view.frame.width / 2).isActive = true
-        // Name label setup
-        view.addSubview(nameLabel)
-        nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
-        nameLabel.text = productName
-        // Price label setup
-        view.addSubview(priceLabel)
-        priceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8).isActive = true
-        priceLabel.text = "\(price)원"
-        // Quantity label setup
-        view.addSubview(quantityLabel)
-        quantityLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        quantityLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 16).isActive = true
-        quantityLabel.text = "\(quantity)"
-        // Minus button setup
-        view.addSubview(minusButton)
-        minusButton.centerYAnchor.constraint(equalTo: quantityLabel.centerYAnchor).isActive = true
-        minusButton.trailingAnchor.constraint(equalTo: quantityLabel.leadingAnchor, constant: -16).isActive = true
-        minusButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        minusButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        minusButton.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
-        // Plus button setup
-        view.addSubview(plusButton)
-        plusButton.centerYAnchor.constraint(equalTo: quantityLabel.centerYAnchor).isActive = true
-        plusButton.leadingAnchor.constraint(equalTo: quantityLabel.trailingAnchor, constant: 16).isActive = true
-        plusButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        plusButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        plusButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
+        
+        
         // Tap gesture recognizer to dismiss modal view
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissModal))
         view.addGestureRecognizer(tapGesture)
@@ -299,4 +319,8 @@ class ModalViewController: UIViewController {
             quantity -= 1
         }
     }
+    @objc func addToCart(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
 }
+
