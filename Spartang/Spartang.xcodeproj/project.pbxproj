@@ -12,11 +12,23 @@
 		75DE9BF22C33C37D006FBF64 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE9BF12C33C37D006FBF64 /* ViewController.swift */; };
 		75DE9BF72C33C381006FBF64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75DE9BF62C33C381006FBF64 /* Assets.xcassets */; };
 		75DE9BFA2C33C381006FBF64 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 75DE9BF92C33C381006FBF64 /* Base */; };
-		CB6100942C359A3E0048FC52 /* SlidingTabView in Frameworks */ = {isa = PBXBuildFile; productRef = CB6100932C359A3E0048FC52 /* SlidingTabView */; };
 		CB6100D62C35AD870048FC52 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6100D52C35AD870048FC52 /* ContentView.swift */; };
 		CB6100E22C367B330048FC52 /* CartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6100E12C367B330048FC52 /* CartManager.swift */; };
-		CB61FEC72C33D7220048FC52 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB61FEC62C33D7220048FC52 /* SnapKit */; };
+		CB6100E42C3687140048FC52 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB6100E32C3687140048FC52 /* SnapKit */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CBAF3A532C3687BF0098E934 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		75DE9BEA2C33C37D006FBF64 /* Spartang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spartang.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -35,8 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB6100942C359A3E0048FC52 /* SlidingTabView in Frameworks */,
-				CB61FEC72C33D7220048FC52 /* SnapKit in Frameworks */,
+				CB6100E42C3687140048FC52 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +103,7 @@
 				75DE9BE62C33C37D006FBF64 /* Sources */,
 				75DE9BE72C33C37D006FBF64 /* Frameworks */,
 				75DE9BE82C33C37D006FBF64 /* Resources */,
+				CBAF3A532C3687BF0098E934 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -99,8 +111,7 @@
 			);
 			name = Spartang;
 			packageProductDependencies = (
-				CB61FEC62C33D7220048FC52 /* SnapKit */,
-				CB6100932C359A3E0048FC52 /* SlidingTabView */,
+				CB6100E32C3687140048FC52 /* SnapKit */,
 			);
 			productName = Spartang;
 			productReference = 75DE9BEA2C33C37D006FBF64 /* Spartang.app */;
@@ -404,12 +415,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CB6100932C359A3E0048FC52 /* SlidingTabView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CB6100922C359A3E0048FC52 /* XCRemoteSwiftPackageReference "SlidingTabView" */;
-			productName = SlidingTabView;
-		};
-		CB61FEC62C33D7220048FC52 /* SnapKit */ = {
+		CB6100E32C3687140048FC52 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CB61FEC52C33D7220048FC52 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;

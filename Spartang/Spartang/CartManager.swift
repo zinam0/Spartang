@@ -10,11 +10,12 @@ import Foundation
 class CartManager {
     
     var menu:[Menu] = []
-    
+    var totalPrice = 0
+
 }
 
 struct Menu {
     let name: String
-    let price: Int
     var quantity: Int
+    let price: Int
 }

@@ -53,6 +53,21 @@ class ViewController: UIViewController {
     private let cart = CartManager()
     
     
+    func addItemToCart(name: String, quantity: Int, price: Int) {
+        let food = Menu(name: name, quantity: quantity, price: price)
+        cart.menu.append(food)
+        collectionView.reloadData()
+        calculateTotalPrice()
+    }
+
+    func calculateTotalPrice() {
+        for item in cart.menu {
+            cart.totalPrice += item.price * item.quantity
+        }
+        print("총 금액 : \(cart.totalPrice)")
+    }
+    
+    
     let tabs = ["장바구니", "안주", "탕", "술", "음료"]
     
     let images: [[String?]] = [
@@ -63,7 +78,6 @@ class ViewController: UIViewController {
         ["d1", "d2", "d3", "d4", "d5", "d6", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
     ]
     
-    var contentLabels: [UILabel] = []
     
     var selectedTabIndex = 0
     
@@ -357,6 +371,7 @@ class ModalViewController: UIViewController {
         }
     }
     @objc func addToCart(_ sender: UIButton) {
+
         dismiss(animated: true, completion: nil)
     }
 }
