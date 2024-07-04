@@ -229,16 +229,10 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
             
             if indexPath.item < cart.menu.count {
                 let item = cart.menu[indexPath.item]
-                cell.totalPriceLabel.text = "\(item.name) - 수량: \(item.quantity), 가격: \(item.price)원"
+                cell.totalPriceLabel.text = "\(item.name), \(item.quantity)개, 가격: \(item.price)원"
             } else {
                 cell.totalPriceLabel.text = ""
             }
-            cell.totalPriceLabel.text! += "\n총 금액 : \(cart.totalPrice)원 입니다."
-//            var cartInfo = ""
-//            for item in cart.menu {
-//                cartInfo += "\(item.name) - 수량 : \(item.quantity), 가격: \(item.price)원\n"
-//            }
-//            cell.totalPriceLabel.text = cartInfo + "\n총 금액 : \(cart.totalPrice)원 입니다."
         } else {
             cell.imageView.isHidden = false
             cell.totalPriceLabel.isHidden = true
@@ -333,6 +327,7 @@ class ImageCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
         
+        totalPriceLabel.numberOfLines = 0
         layer.borderColor = UIColor.white.cgColor
         layer.borderWidth = 5
     }
@@ -571,5 +566,6 @@ class ModalViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 }
+
 
 
