@@ -13,6 +13,7 @@ class DataContainer {
     private init() {
         
     }
+    //dictionary
     var menuItems: [String: [Menu?]] = [
         "베스트": [
             
