@@ -14,6 +14,7 @@
 		75DE9BFA2C33C381006FBF64 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 75DE9BF92C33C381006FBF64 /* Base */; };
 		CB6100942C359A3E0048FC52 /* SlidingTabView in Frameworks */ = {isa = PBXBuildFile; productRef = CB6100932C359A3E0048FC52 /* SlidingTabView */; };
 		CB6100D62C35AD870048FC52 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6100D52C35AD870048FC52 /* ContentView.swift */; };
+		CB6100E22C367B330048FC52 /* CartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6100E12C367B330048FC52 /* CartManager.swift */; };
 		CB61FEC72C33D7220048FC52 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB61FEC62C33D7220048FC52 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +27,7 @@
 		75DE9BF92C33C381006FBF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		75DE9BFB2C33C381006FBF64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB6100D52C35AD870048FC52 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CB6100E12C367B330048FC52 /* CartManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				75DE9BF62C33C381006FBF64 /* Assets.xcassets */,
 				75DE9BF82C33C381006FBF64 /* LaunchScreen.storyboard */,
 				75DE9BFB2C33C381006FBF64 /* Info.plist */,
+				CB6100E12C367B330048FC52 /* CartManager.swift */,
 			);
 			path = Spartang;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 			files = (
 				75DE9BF22C33C37D006FBF64 /* ViewController.swift in Sources */,
 				CB6100D62C35AD870048FC52 /* ContentView.swift in Sources */,
+				CB6100E22C367B330048FC52 /* CartManager.swift in Sources */,
 				75DE9BEE2C33C37D006FBF64 /* AppDelegate.swift in Sources */,
 				75DE9BF02C33C37D006FBF64 /* SceneDelegate.swift in Sources */,
 			);

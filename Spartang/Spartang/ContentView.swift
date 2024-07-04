@@ -88,7 +88,7 @@ struct TabBarItem: View {
 
 struct View1: View {
     var body: some View {
-        Color.white
+        Color.red
             .opacity(0.2)
             .edgesIgnoringSafeArea(.all)
     }
@@ -96,7 +96,7 @@ struct View1: View {
 
 struct View2: View {
     var body: some View {
-        Color.white
+        Color.yellow
             .opacity(0.2)
             .edgesIgnoringSafeArea(.all)
     }
@@ -104,7 +104,7 @@ struct View2: View {
 
 struct View3: View {
     var body: some View {
-        Color.white
+        Color.green
             .opacity(0.2)
             .edgesIgnoringSafeArea(.all)
     }
@@ -112,7 +112,7 @@ struct View3: View {
 
 struct View4: View {
     var body: some View {
-        Color.white
+        Color.blue
             .opacity(0.2)
             .edgesIgnoringSafeArea(.all)
     }
@@ -120,7 +120,7 @@ struct View4: View {
 
 struct View5: View {
     var body: some View {
-        Color.white
+        Color.cyan
             .opacity(0.2)
             .edgesIgnoringSafeArea(.all)
     }

@@ -26,6 +26,8 @@ class MyViewController: UIViewController {
     }
 }
 
+
+
 class ViewController: UIViewController {
     
     let titleLabel: UILabel = {
@@ -47,6 +49,8 @@ class ViewController: UIViewController {
         stackView.spacing = 10
         return stackView
     }()
+    
+    private let cart = CartManager()
     
     
     let tabs = ["장바구니", "안주", "탕", "술", "음료"]
