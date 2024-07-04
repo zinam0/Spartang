@@ -8,8 +8,7 @@
 import UIKit
 
 class MenuCell: UICollectionViewCell {
-    //메뉴 타이틀
-    //메뉴 이미지
-    //메뉴 가격
-    
+    let images = UIImage()
+    let menuName = UILabel()
+    let menuPrice = UILabel()
 }
