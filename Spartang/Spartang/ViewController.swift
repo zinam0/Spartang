@@ -214,7 +214,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if selectedTabIndex == 0 {
-            return 1
+            return cart.menu.count
         } else {
             return images[selectedTabIndex].count
         }
@@ -222,9 +222,23 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseIdentifier, for: indexPath) as! ImageCell
-        if selectedTabIndex == 0 { cell.imageView.isHidden = true
+        
+        if selectedTabIndex == 0 {
+            cell.imageView.isHidden = true
             cell.totalPriceLabel.isHidden = false
-            cell.totalPriceLabel.text = "총 금액 : \(cart.totalPrice)원"
+            
+            if indexPath.item < cart.menu.count {
+                let item = cart.menu[indexPath.item]
+                cell.totalPriceLabel.text = "\(item.name) - 수량: \(item.quantity), 가격: \(item.price)원"
+            } else {
+                cell.totalPriceLabel.text = ""
+            }
+            cell.totalPriceLabel.text! += "\n총 금액 : \(cart.totalPrice)원 입니다."
+//            var cartInfo = ""
+//            for item in cart.menu {
+//                cartInfo += "\(item.name) - 수량 : \(item.quantity), 가격: \(item.price)원\n"
+//            }
+//            cell.totalPriceLabel.text = cartInfo + "\n총 금액 : \(cart.totalPrice)원 입니다."
         } else {
             cell.imageView.isHidden = false
             cell.totalPriceLabel.isHidden = true
@@ -253,6 +267,12 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         return cart.menu.count
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            deleteCartItem(at: indexPath)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CartItemCell.reuseIdentifier, for: indexPath) as! CartItemCell
         let menuItem = cart.menu[indexPath.row]
@@ -261,6 +281,18 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         cell.priceLabel.text = "\(menuItem.price)원"
         cell.checkBox.isSelected = false
         return cell
+    }
+}
+
+extension ViewController {
+    func deleteCartItem(at indexPath: IndexPath) {
+        
+        let deletedMenu = cart.menu[indexPath.row]
+        cart.menu.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        cart.totalPrice -= deletedMenu.price * deletedMenu.quantity
+        totalPriceLabel.text = "총 금액 : \(cart.totalPrice)원"
+        totalPriceLabel.isHidden = cart.menu.isEmpty
     }
 }
 
