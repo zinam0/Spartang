@@ -103,6 +103,16 @@ class ViewController: UIViewController {
         return collectionView
     }()
     
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .white
+        tableView.register(CartItemCell.self, forCellReuseIdentifier: CartItemCell.reuseIdentifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.allowsSelection = false
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -163,6 +173,13 @@ class ViewController: UIViewController {
             make.left.equalTo(view).offset(20)
             make.right.equalTo(view).offset(-20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
+        }
+        
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(totalPriceLabel.snp.bottom).offset(20)
+            make.left.equalTo(view).offset(20)
+            make.right.equalTo(view).offset(-20)
         }
     }
     
@@ -230,6 +247,23 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { if selectedTabIndex != 0 { if let imageName = images[selectedTabIndex][indexPath.item], !imageName.isEmpty { presentHalfScreenModal(with: imageName) } } } }
 
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cart.menu.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: CartItemCell.reuseIdentifier, for: indexPath) as! CartItemCell
+        let menuItem = cart.menu[indexPath.row]
+        cell.productNameLabel.text = menuItem.name
+        cell.quantityLabel.text = "수량 : \(menuItem.quantity)"
+        cell.priceLabel.text = "\(menuItem.price)원"
+        cell.checkBox.isSelected = false
+        return cell
+    }
+}
+
 class ImageCell: UICollectionViewCell {
     
     static let reuseIdentifier = "ImageCell"
@@ -275,6 +309,71 @@ class ImageCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+class CartItemCell: UITableViewCell {
+    
+        static let reuseIdentifier = "CartItemCell"
+    
+        let productNameLabel: UILabel = {
+            let label = UILabel()
+            label.font = UIFont.boldSystemFont(ofSize: 16)
+            return label
+        }()
+    
+        let quantityLabel: UILabel = {
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 14)
+            label.textColor = .gray
+            return label
+        }()
+    
+        let priceLabel: UILabel = {
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 14)
+            label.textColor = .gray
+            return label
+        }()
+    
+        let checkBox: UIButton = {
+            let button = UIButton()
+            button.setImage(UIImage(systemName: "square"), for: .normal)
+            button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .selected)
+            return button
+        }()
+    
+        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            addSubview(productNameLabel)
+            addSubview(quantityLabel)
+            addSubview(priceLabel)
+            addSubview(checkBox)
+
+            checkBox.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.leading.equalToSuperview().offset(10)
+                make.width.height.equalTo(20)
+            }
+            
+            productNameLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.leading.equalTo(checkBox.snp.trailing).offset(10)
+            }
+            
+            quantityLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.leading.equalTo(productNameLabel.snp.trailing).offset(10)
+            }
+            
+            priceLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.trailing.equalToSuperview().offset(-10)
+            }
+        }
+    
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+    }
 
 protocol ModalViewControllerDelegate {
     func updateCart(menu: Menu)
