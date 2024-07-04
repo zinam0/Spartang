@@ -27,10 +27,18 @@ class ViewController: UIViewController {
     let tabs = ["베스트", "탕", "사이드", "소주/맥주", "음료"]
     let tabColors: [UIColor] = [.red, .blue, .yellow, .green, .orange]
     var contentLabels: [UILabel] = []
+    
+    
+    let menuView = MenuView()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         view.backgroundColor = .white
+        menuView.makeUI()
+
+
     }
     func setupViews() {
         view.addSubview(titleLabel)
@@ -50,6 +58,19 @@ class ViewController: UIViewController {
             make.edges.equalTo(scrollView)
             make.height.equalTo(scrollView)
         }
+        view.addSubview(menuView)
+
+        menuView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            menuView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
+            menuView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            menuView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            menuView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
+            
+//            menuView.heightAnchor.constraint(equalToConstant: 500)
+        ])
+        
         for (index, tab) in tabs.enumerated() {
             let tabButton = UIButton()
             tabButton.setTitle(tab, for: .normal)
@@ -66,19 +87,19 @@ class ViewController: UIViewController {
             }
             stackView.addArrangedSubview(tabButton)
 
-            let contentLabel = UILabel()
-            contentLabel.text = "\(tab) 컬렉션들"
-            contentLabel.backgroundColor = tabColors[index]
-            contentLabel.textAlignment = .center
-            contentLabel.isHidden = true
-            view.addSubview(contentLabel)
-            contentLabel.snp.makeConstraints { make in
-                make.top.equalTo(scrollView.snp.bottom).offset(20)
-                make.left.equalTo(view).offset(20)
-                make.right.equalTo(view).offset(-20)
-                make.height.equalTo(100)
-            }
-            contentLabels.append(contentLabel)
+//            let contentLabel = UILabel()
+//            contentLabel.text = "\(tab) 컬렉션들"
+//            contentLabel.backgroundColor = tabColors[index]
+//            contentLabel.textAlignment = .center
+//            contentLabel.isHidden = true
+//            view.addSubview(contentLabel)
+//            contentLabel.snp.makeConstraints { make in
+//                make.top.equalTo(scrollView.snp.bottom).offset(20)
+//                make.left.equalTo(view).offset(20)
+//                make.right.equalTo(view).offset(-20)
+//                make.height.equalTo(100)
+//            }
+//            contentLabels.append(contentLabel)
         }
     }
     @objc func tabTapped(_ sender: UIButton) {
@@ -86,5 +107,6 @@ class ViewController: UIViewController {
             label.isHidden = true
         }
         contentLabels[sender.tag].isHidden = false
+        menuView.categoryLoadData()
     }
 }

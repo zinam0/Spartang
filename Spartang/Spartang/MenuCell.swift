@@ -9,7 +9,6 @@ import UIKit
 
 //기본적으로 collectionview는 스크롤이 탑재되어있어서 여기서 구현하지 않아도됨
 class MenuCell: UICollectionViewCell {
-    
    
     private lazy var menuTitleLabel: UILabel = {
         let label = UILabel()

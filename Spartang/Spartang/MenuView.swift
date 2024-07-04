@@ -8,7 +8,6 @@
 import UIKit
 
 class MenuView: UIView {
-    
     //해라님이 짠 코드와 연결시켜서 사용해야함
     var currentCategory = "베스트"
     
@@ -42,9 +41,20 @@ class MenuView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func makeUI() {
+   func makeUI() {
         //addsubview
         //lay out - view. x Topanchor / leadinganchor
+        
+        addSubview(collectionView)
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 500)
+//            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        
     }
     
     public func categoryLoadData() {
@@ -56,17 +66,24 @@ class MenuView: UIView {
 
 extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuCell", for: indexPath) as? MenuCell else {
+            fatalError("Failed to dequeue MenuCell")
+          }
+        if let filteredItems = DataContainer.shared.menuItems[currentCategory],
+          let menuItem = filteredItems[indexPath.item]{
+          cell.configure(menuItem)
+        }
+        return cell
+      }
     //카테고리 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //currentCategory 키값을 찾아서 탕 - 9 
         return DataContainer.shared.menuItems[currentCategory]?.count ?? 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = UICollectionViewCell()
-        return cell
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 200, height: 200)
     }
-    
     
 }
