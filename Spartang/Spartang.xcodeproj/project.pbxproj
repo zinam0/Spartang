@@ -52,7 +52,6 @@
 		759A61592C3640A5000C381C /* ResourceManager */ = {
 			isa = PBXGroup;
 			children = (
-				C77350C32C37A9D4002E837D /* CartInfo.swift */,
 			);
 			path = ResourceManager;
 			sourceTree = "<group>";
@@ -87,6 +86,7 @@
 				759A61512C36339C000C381C /* MenuView.swift */,
 				759A61532C3633BC000C381C /* MenuCell.swift */,
 				759A61572C363927000C381C /* Menu.swift */,
+				C77350C32C37A9D4002E837D /* CartInfo.swift */,
 				C77350C12C379AC6002E837D /* CartCell.swift */,
 			);
 			path = Spartang;

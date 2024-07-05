@@ -118,12 +118,12 @@ class CartCell: UITableViewCell {
 //    }
 //    var test = DataContainer()
 //    MenuItem = test.menuItems
-    func configure(_ menuItem: Menu) {
+    func configure(menuItem: Menu, quantity: Int) {
             titleLabel.text = menuItem.name
             priceLabel.text = "\(menuItem.price)원"
 //            quantity = menuItem.quantity
         
-//            quantityLabel.text = "\(menuItem.quantity)"
+            quantityLabel.text = "\(quantity)"
         }
 //    
 //    
@@ -131,6 +131,8 @@ class CartCell: UITableViewCell {
         if quantity > 1 {
             quantity -= 1
             print("-", quantity)
+        } else {
+            removeButtonTapped()
         }
     }
 

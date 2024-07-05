@@ -11,7 +11,8 @@ class MenuView: UIView, CartTableViewCellDelegate {
     //해라님이 짠 코드와 연결시켜서 사용해야함
     var currentCategory = "탕"
     
-    private var cartItems: [String: [Menu]] = [:]  // 장바구니 담기
+//    private var cartItems: [String: [Menu]] = [:]  // 장바구니 담기
+    private var cartItems: [String: (menu: Menu, quantity: Int)] = [:]
     
     private let flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -70,6 +71,17 @@ class MenuView: UIView, CartTableViewCellDelegate {
         return button
     }()
     
+    private let clearAllButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("전체 삭제", for: .normal)
+        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.systemBlue.cgColor
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         makeUI()
@@ -79,6 +91,16 @@ class MenuView: UIView, CartTableViewCellDelegate {
         cartTableView.delegate = self
         cartTableView.dataSource = self
         
+        addSubview(collectionView)
+        addSubview(cartView)
+        addSubview(clearAllButton)
+        
+        cartView.addSubview(cartTableView)
+        cartView.addSubview(totalPriceLabel)
+        cartView.addSubview(checkoutButton)
+        
+        setupClearAllButtonConstraints()
+        clearAllButton.addTarget(self, action: #selector(clearAllButtonTapped), for: .touchUpInside)
         
         
     }
@@ -101,14 +123,15 @@ class MenuView: UIView, CartTableViewCellDelegate {
             collectionView.topAnchor.constraint(equalTo: topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 300),
-            //            collectionView.bottomAnchor.constraint(equalTo: cartView.bottomAnchor, constant: -20),
+//            collectionView.heightAnchor.constraint(equalToConstant: 250),
+            collectionView.bottomAnchor.constraint(equalTo: cartView.topAnchor, constant: -30),
             
             // MARK: - Yechan
             cartView.leadingAnchor.constraint(equalTo: leadingAnchor),
             cartView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            cartView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 10),
-            cartView.heightAnchor.constraint(equalToConstant: 300),
+//            cartView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 10),
+            cartView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            cartView.heightAnchor.constraint(equalToConstant: 230),
             
             cartTableView.topAnchor.constraint(equalTo: cartView.topAnchor),
             cartTableView.leadingAnchor.constraint(equalTo: cartView.leadingAnchor),
@@ -116,12 +139,12 @@ class MenuView: UIView, CartTableViewCellDelegate {
             cartTableView.bottomAnchor.constraint(equalTo: totalPriceLabel.topAnchor, constant: -10),
             //
             totalPriceLabel.trailingAnchor.constraint(equalTo: cartView.trailingAnchor, constant: -20),
-            totalPriceLabel.bottomAnchor.constraint(equalTo: cartView.bottomAnchor),
+            totalPriceLabel.bottomAnchor.constraint(equalTo: checkoutButton.bottomAnchor, constant: -40),
             //
-            //            checkoutButton.leadingAnchor.constraint(equalTo: cartView.leadingAnchor, constant: 20),
-            //            checkoutButton.trailingAnchor.constraint(equalTo: cartView.trailingAnchor, constant: -20),
-            //            checkoutButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-            //            checkoutButton.heightAnchor.constraint(equalToConstant: 30),
+                        checkoutButton.leadingAnchor.constraint(equalTo: cartView.leadingAnchor, constant: 20),
+                        checkoutButton.trailingAnchor.constraint(equalTo: cartView.trailingAnchor, constant: -20),
+                        checkoutButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+                        checkoutButton.heightAnchor.constraint(equalToConstant: 30),
             
             
         ])
@@ -129,25 +152,37 @@ class MenuView: UIView, CartTableViewCellDelegate {
     }
     
     //MARK: - Yechan
+    private func setupClearAllButtonConstraints() {
+        NSLayoutConstraint.activate([
+            clearAllButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -2),
+            clearAllButton.bottomAnchor.constraint(equalTo: cartView.topAnchor, constant: -2),
+            clearAllButton.widthAnchor.constraint(equalToConstant: 80),
+            clearAllButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    @objc private func clearAllButtonTapped() {
+        cartItems.removeAll()
+        updateTotalPrice()
+        cartTableView.reloadData()
+    }
+    
     private func addToCart(_ item: Menu) {
         // 장바구니에 같은 카테고리의 항목이 없으면 새로 추가, 있으면 기존에 추가된 항목에 더함
         print(currentCategory)
         
         if var existingItems = cartItems[item.name] {
-            existingItems.append(item)
+//            existingItems.append(item)
+//            cartItems[item.name] = existingItems
+//        } else {
+//            cartItems[item.name] = [item]
+//        }
+            existingItems.quantity += 1
             cartItems[item.name] = existingItems
         } else {
-            cartItems[item.name] = [item]
+            cartItems[item.name] = (menu: item, quantity: 1)
         }
-        
-//        if var existingItems = cartItems[currentCategory] {
-//            existingItems.append(item)
-//            cartItems[currentCategory] = existingItems
-//        } else {
-//            cartItems[currentCategory] = [item]
-//        }
     }
-    
     
     public func categoryLoadData(_ newCatagory: String) {
         
@@ -169,6 +204,7 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuCell.identifier, for: indexPath) as? MenuCell else {
             return UICollectionViewCell()
         }
+        
         if let filteredItems = DataContainer.shared.menuItems[currentCategory],
            let menuItem = filteredItems[indexPath.item]{
             cell.configure(menuItem)
@@ -186,6 +222,8 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         if let selectedItem = filteredItems?[indexPath.item] {
             // cartItems에 추가 또는 업데이트 로직을 여기에 구현
             addToCart(selectedItem)
+           
+            
         }
         cartTableView.reloadData()
     }
@@ -196,16 +234,13 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as! CartCell
-        //        let cartInfo = Array(cartItems.values)[indexPath.row]
-        //        cell.configure(with: cartInfo.menuItem)
-        ////        cell.quantityLabel.text = "\(cartInfo.quantity)"
-        //        cell.delegate = self
-        //        return cell
-        // cartItems에서 해당 인덱스의 항목을 가져옵니다.
         let categoryKey = Array(cartItems.keys)[indexPath.row]
-        if let menuItem = cartItems[categoryKey]?.first {
-            cell.configure(menuItem)
-        }
+//        if let menuItem = cartItems[categoryKey]?.first {
+//            cell.configure(menuItem)
+//        }
+        if let (menuItem, quantity) = cartItems[categoryKey] {
+            cell.configure(menuItem:menuItem, quantity: quantity)
+                }
         cell.delegate = self
         return cell
     }
@@ -216,16 +251,24 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
             let key = Array(cartItems.keys)[indexPath.row]
             cartItems.removeValue(forKey: key)
             tableView.deleteRows(at: [indexPath], with: .automatic)
-            //            updateTotalPrice()
+            updateTotalPrice()
         }
     }
+    
+    private func updateTotalPrice() {
+            let totalPrice = cartItems.reduce(0) { (result, item) -> Int in
+                let (menuItem, quantity) = item.value
+                return result + (menuItem.price * quantity)
+            }
+            totalPriceLabel.text = "총 메뉴 \(cartItems.count)개 결제: \(totalPrice)원"
+        }
     
     func didTapRemoveButton(on cell: CartCell) {
         guard let indexPath = cartTableView.indexPath(for: cell) else { return }
         let key = Array(cartItems.keys)[indexPath.row]
         cartItems.removeValue(forKey: key)
         cartTableView.deleteRows(at: [indexPath], with: .automatic)
-        //        updateTotalPrice()
+        updateTotalPrice()
     }
     
     

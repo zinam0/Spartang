@@ -1,5 +1,5 @@
 struct CartInfo {
+    var menuItem: Menu
+    var quantity: Int
     
-//    var name: String
-    var price: Int
 }
