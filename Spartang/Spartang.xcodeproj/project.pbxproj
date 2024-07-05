@@ -16,6 +16,8 @@
 		75DE9BF22C33C37D006FBF64 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE9BF12C33C37D006FBF64 /* ViewController.swift */; };
 		75DE9BF72C33C381006FBF64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75DE9BF62C33C381006FBF64 /* Assets.xcassets */; };
 		75DE9BFA2C33C381006FBF64 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 75DE9BF92C33C381006FBF64 /* Base */; };
+		C77350C22C379AC6002E837D /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77350C12C379AC6002E837D /* CartCell.swift */; };
+		C77350C42C37A9D4002E837D /* CartInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77350C32C37A9D4002E837D /* CartInfo.swift */; };
 		CB61FEC72C33D7220048FC52 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB61FEC62C33D7220048FC52 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +33,8 @@
 		75DE9BF62C33C381006FBF64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75DE9BF92C33C381006FBF64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		75DE9BFB2C33C381006FBF64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C77350C12C379AC6002E837D /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
+		C77350C32C37A9D4002E837D /* CartInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CartInfo.swift; path = Spartang/CartInfo.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +86,8 @@
 				759A61512C36339C000C381C /* MenuView.swift */,
 				759A61532C3633BC000C381C /* MenuCell.swift */,
 				759A61572C363927000C381C /* Menu.swift */,
+				C77350C32C37A9D4002E837D /* CartInfo.swift */,
+				C77350C12C379AC6002E837D /* CartCell.swift */,
 			);
 			path = Spartang;
 			sourceTree = "<group>";
@@ -162,9 +168,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C77350C42C37A9D4002E837D /* CartInfo.swift in Sources */,
 				759A61582C363927000C381C /* Menu.swift in Sources */,
 				75DE9BF22C33C37D006FBF64 /* ViewController.swift in Sources */,
 				759A61542C3633BC000C381C /* MenuCell.swift in Sources */,
+				C77350C22C379AC6002E837D /* CartCell.swift in Sources */,
 				759A61522C36339C000C381C /* MenuView.swift in Sources */,
 				75DE9BEE2C33C37D006FBF64 /* AppDelegate.swift in Sources */,
 				75DE9BF02C33C37D006FBF64 /* SceneDelegate.swift in Sources */,

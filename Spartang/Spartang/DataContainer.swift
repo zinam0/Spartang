@@ -16,7 +16,14 @@ class DataContainer {
     //dictionary
     var menuItems: [String: [Menu?]] = [
         "베스트": [
-            
+            Menu(
+                image: "tang_5",
+                name: "마라탕",
+                price: 25000),
+            Menu(
+                image: "tang_7",
+                name: "동태탕",
+                price: 20000),
         ],
         "탕": [
             Menu(
