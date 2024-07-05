@@ -3,7 +3,7 @@ import UIKit
 
 // 델리게이트를 위한 프로토콜 정의
 protocol CartTableViewCellDelegate: AnyObject {
-//    func didUpdateQuantity(on cell: CartTableViewCell, quantity: Int)
+    func didUpdateQuantity(on cell: CartCell, quantity: Int)
     func didTapRemoveButton(on cell: CartCell)
 }
 
@@ -12,11 +12,22 @@ class CartCell: UITableViewCell {
     
     weak var delegate: CartTableViewCellDelegate?
     
-    private var quantity: Int = 1
-    {
-            didSet {
-                quantityLabel.text = "\(quantity)"
+//    private var quantity: Int = 1
+//    {
+//            didSet {
+//                quantityLabel.text = "\(quantity)"
 //                delegate?.didUpdateQuantity(on: self, quantity: quantity)
+//            }
+//        }
+    
+    private var isConfigure = false
+        
+        private var quantity: Int = 1 {
+            didSet {
+                if !isConfigure {
+                    quantityLabel.text = "\(quantity)"
+                    delegate?.didUpdateQuantity(on: self, quantity: quantity)
+                }
             }
         }
     
@@ -110,23 +121,21 @@ class CartCell: UITableViewCell {
             removeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
-    
-//    func configure(with menuItem: MenuItem) {
-//        titleLabel.text = menuItem.title
-//        priceLabel.text = "\(menuItem.price)원"
-//        quantityLabel.text = "\(menuItem.quantity)"
-//    }
-//    var test = DataContainer()
-//    MenuItem = test.menuItems
     func configure(menuItem: Menu, quantity: Int) {
-            titleLabel.text = menuItem.name
-            priceLabel.text = "\(menuItem.price)원"
-//            quantity = menuItem.quantity
-        
-            quantityLabel.text = "\(quantity)"
+        isConfigure = true
+        self.quantity = quantity
+        isConfigure = false
+        titleLabel.text = menuItem.name
+        priceLabel.text = "\(menuItem.price * quantity)원"
+        quantityLabel.text = "\(quantity)"
         }
-//    
-//    
+
+//    func configure(menuItem: Menu, quantity: Int) {
+//            titleLabel.text = menuItem.name
+//            priceLabel.text = "\(menuItem.price * quantity)원"
+//            quantityLabel.text = "\(quantity)"
+//        }
+   
     @objc private func minusButtonTapped() {
         if quantity > 1 {
             quantity -= 1
@@ -140,13 +149,12 @@ class CartCell: UITableViewCell {
         quantity += 1
         print("+", quantity)
     }
-//
     @objc private func removeButtonTapped() {
         delegate?.didTapRemoveButton(on: self)
     }
     
 }
-//
-//#Preview {
-//    MenuViewController()
-//}
+
+#Preview {
+    ViewController()
+}
