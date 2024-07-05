@@ -99,8 +99,6 @@ class MenuView: UIView, CartTableViewCellDelegate {
         
         setupClearAllButtonConstraints()
         clearAllButton.addTarget(self, action: #selector(clearAllButtonTapped), for: .touchUpInside)
-        checkoutButton.addTarget(self, action: #selector(clearAllButtonTapped), for: .touchUpInside)
-        
         
     }
     
@@ -164,15 +162,6 @@ class MenuView: UIView, CartTableViewCellDelegate {
         cartTableView.reloadData()
     }
     
-    @objc private func checkoutButtonTapped() {
-//        show
-    }
-    
-//    func showAlert(message: String) {
-//        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-//        alertController.addAction(UIAlertAction(title: "확인", style: .default))
-//        present(alertController, animated: true)
-//    }
     
     private func addToCart(_ item: Menu) {
         // 장바구니에 같은 카테고리의 항목이 없으면 새로 추가, 있으면 기존에 추가된 항목에 더함
