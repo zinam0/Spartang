@@ -226,6 +226,7 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
             
         }
         cartTableView.reloadData()
+        updateTotalPrice()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
