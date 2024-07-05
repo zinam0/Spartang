@@ -24,8 +24,8 @@ class MenuView: UIView, CartTableViewCellDelegate {
     //반드시 lazy var 선언 해야함
     private lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero,  collectionViewLayout: flowLayout)
-//        view.dataSource = self // 뷰 나타낼려면 필수
-//        view.delegate = self // 뷰 나타낼려면 필수
+        //        view.dataSource = self // 뷰 나타낼려면 필수
+        //        view.delegate = self // 뷰 나타낼려면 필수
         view.isScrollEnabled = true
         view.showsHorizontalScrollIndicator = true
         view.showsVerticalScrollIndicator = false
@@ -36,10 +36,10 @@ class MenuView: UIView, CartTableViewCellDelegate {
         return view
     }()
     
-// MARK: - Yechan
+    // MARK: - Yechan
     private let cartView: UIView = {
         let view = UIView()
-//        view.backgroundColor = .systemGray6 // layout 확인차
+        //        view.backgroundColor = .systemGray6 // layout 확인차
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.lightGray.cgColor
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -87,7 +87,7 @@ class MenuView: UIView, CartTableViewCellDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-   func makeUI() {
+    func makeUI() {
         //addsubview
         //lay out - view. x Topanchor / leadinganchor
         
@@ -102,9 +102,9 @@ class MenuView: UIView, CartTableViewCellDelegate {
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.heightAnchor.constraint(equalToConstant: 300),
-//            collectionView.bottomAnchor.constraint(equalTo: cartView.bottomAnchor, constant: -20),
+            //            collectionView.bottomAnchor.constraint(equalTo: cartView.bottomAnchor, constant: -20),
             
-// MARK: - Yechan
+            // MARK: - Yechan
             cartView.leadingAnchor.constraint(equalTo: leadingAnchor),
             cartView.trailingAnchor.constraint(equalTo: trailingAnchor),
             cartView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 10),
@@ -114,22 +114,43 @@ class MenuView: UIView, CartTableViewCellDelegate {
             cartTableView.leadingAnchor.constraint(equalTo: cartView.leadingAnchor),
             cartTableView.trailingAnchor.constraint(equalTo: cartView.trailingAnchor),
             cartTableView.bottomAnchor.constraint(equalTo: totalPriceLabel.topAnchor, constant: -10),
-//            
+            //
             totalPriceLabel.trailingAnchor.constraint(equalTo: cartView.trailingAnchor, constant: -20),
             totalPriceLabel.bottomAnchor.constraint(equalTo: cartView.bottomAnchor),
-//
-//            checkoutButton.leadingAnchor.constraint(equalTo: cartView.leadingAnchor, constant: 20),
-//            checkoutButton.trailingAnchor.constraint(equalTo: cartView.trailingAnchor, constant: -20),
-//            checkoutButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-//            checkoutButton.heightAnchor.constraint(equalToConstant: 30),
+            //
+            //            checkoutButton.leadingAnchor.constraint(equalTo: cartView.leadingAnchor, constant: 20),
+            //            checkoutButton.trailingAnchor.constraint(equalTo: cartView.trailingAnchor, constant: -20),
+            //            checkoutButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            //            checkoutButton.heightAnchor.constraint(equalToConstant: 30),
             
             
         ])
         
     }
     
+    //MARK: - Yechan
+    private func addToCart(_ item: Menu) {
+        // 장바구니에 같은 카테고리의 항목이 없으면 새로 추가, 있으면 기존에 추가된 항목에 더함
+        print(currentCategory)
+        
+        if var existingItems = cartItems[item.name] {
+            existingItems.append(item)
+            cartItems[item.name] = existingItems
+        } else {
+            cartItems[item.name] = [item]
+        }
+        
+//        if var existingItems = cartItems[currentCategory] {
+//            existingItems.append(item)
+//            cartItems[currentCategory] = existingItems
+//        } else {
+//            cartItems[currentCategory] = [item]
+//        }
+    }
+    
+    
     public func categoryLoadData(_ newCatagory: String) {
-       
+        
         currentCategory = newCatagory
         collectionView.reloadData()
     }
@@ -137,62 +158,49 @@ class MenuView: UIView, CartTableViewCellDelegate {
 
 
 extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource {
-   
+    
     //카테고리 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //currentCategory 키값을 찾아서 탕 - 9
-        return DataContainer.shared.menuItems[currentCategory]?.count ?? 0 // private 가져오는 방법 
+        return DataContainer.shared.menuItems[currentCategory]?.count ?? 0 // private 가져오는 방법
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuCell.identifier, for: indexPath) as? MenuCell else {
             return UICollectionViewCell()
-          }
+        }
         if let filteredItems = DataContainer.shared.menuItems[currentCategory],
-          let menuItem = filteredItems[indexPath.item]{
+           let menuItem = filteredItems[indexPath.item]{
             cell.configure(menuItem)
             cell.backgroundColor = .blue
         }
         return cell
-      }
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 80) // 셀의 이미지 사이즈
     }
-
-    //MARK: - Yechan
-    private func addToCart(_ item: Menu) {
-            // 장바구니에 같은 카테고리의 항목이 없으면 새로 추가, 있으면 기존에 추가된 항목에 더함
-            if var existingItems = cartItems[currentCategory] {
-                existingItems.append(item)
-                cartItems[currentCategory] = existingItems
-            } else {
-                cartItems[currentCategory] = [item]
-            }
-        }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let filteredItems = DataContainer.shared.menuItems[currentCategory]
         if let selectedItem = filteredItems?[indexPath.item] {
-                // cartItems에 추가 또는 업데이트 로직을 여기에 구현
-                addToCart(selectedItem)
-                print(selectedItem)
-            }
-        
+            // cartItems에 추가 또는 업데이트 로직을 여기에 구현
+            addToCart(selectedItem)
+        }
         cartTableView.reloadData()
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cartItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as! CartCell
-//        let cartInfo = Array(cartItems.values)[indexPath.row]
-//        cell.configure(with: cartInfo.menuItem)
-////        cell.quantityLabel.text = "\(cartInfo.quantity)"
-//        cell.delegate = self
-//        return cell
+        //        let cartInfo = Array(cartItems.values)[indexPath.row]
+        //        cell.configure(with: cartInfo.menuItem)
+        ////        cell.quantityLabel.text = "\(cartInfo.quantity)"
+        //        cell.delegate = self
+        //        return cell
         // cartItems에서 해당 인덱스의 항목을 가져옵니다.
         let categoryKey = Array(cartItems.keys)[indexPath.row]
         if let menuItem = cartItems[categoryKey]?.first {
@@ -208,7 +216,7 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
             let key = Array(cartItems.keys)[indexPath.row]
             cartItems.removeValue(forKey: key)
             tableView.deleteRows(at: [indexPath], with: .automatic)
-//            updateTotalPrice()
+            //            updateTotalPrice()
         }
     }
     
@@ -217,7 +225,7 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         let key = Array(cartItems.keys)[indexPath.row]
         cartItems.removeValue(forKey: key)
         cartTableView.deleteRows(at: [indexPath], with: .automatic)
-//        updateTotalPrice()
+        //        updateTotalPrice()
     }
     
     
