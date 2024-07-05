@@ -7,6 +7,7 @@
 import UIKit
 import SnapKit
 class ViewController: UIViewController {
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "스파르탕"
@@ -33,11 +34,20 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         view.backgroundColor = .white
-
+        
     }
     func setupViews() {
         view.addSubview(titleLabel)
         view.addSubview(scrollView)
+        
+        
+//         Adjust Scroll View Insets 비활성화 - 테이블뷰 이미지 안나올때 
+//        if #available(iOS 11.0, *) {
+//            scrollView.contentInsetAdjustmentBehavior = .never
+//        } else {
+//            self.automaticallyAdjustsScrollViewInsets = false
+//        }
+
         scrollView.addSubview(stackView)
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
@@ -62,7 +72,7 @@ class ViewController: UIViewController {
             menuView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             menuView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             menuView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
-            
+    
         ])
         
         for (index, tab) in tabs.enumerated() {
