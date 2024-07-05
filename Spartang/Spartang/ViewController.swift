@@ -25,10 +25,7 @@ class ViewController: UIViewController {
         return stackView
     }()
     let tabs = ["베스트", "탕", "사이드", "소주/맥주", "음료"]
-    let tabColors: [UIColor] = [.red, .blue, .yellow, .green, .orange]
-    var contentLabels: [UILabel] = []
-    
-    
+
     let menuView = MenuView()
 
     
@@ -36,8 +33,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         view.backgroundColor = .white
-        menuView.makeUI()
-
 
     }
     func setupViews() {
@@ -68,7 +63,6 @@ class ViewController: UIViewController {
             menuView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             menuView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
             
-//            menuView.heightAnchor.constraint(equalToConstant: 500)
         ])
         
         for (index, tab) in tabs.enumerated() {
@@ -86,27 +80,11 @@ class ViewController: UIViewController {
                 make.width.equalTo(100)
             }
             stackView.addArrangedSubview(tabButton)
-
-//            let contentLabel = UILabel()
-//            contentLabel.text = "\(tab) 컬렉션들"
-//            contentLabel.backgroundColor = tabColors[index]
-//            contentLabel.textAlignment = .center
-//            contentLabel.isHidden = true
-//            view.addSubview(contentLabel)
-//            contentLabel.snp.makeConstraints { make in
-//                make.top.equalTo(scrollView.snp.bottom).offset(20)
-//                make.left.equalTo(view).offset(20)
-//                make.right.equalTo(view).offset(-20)
-//                make.height.equalTo(100)
-//            }
-//            contentLabels.append(contentLabel)
         }
     }
     @objc func tabTapped(_ sender: UIButton) {
-        for label in contentLabels {
-            label.isHidden = true
-        }
-        contentLabels[sender.tag].isHidden = false
-        menuView.categoryLoadData()
+        let catagory = tabs[sender.tag]
+
+        menuView.categoryLoadData(catagory)
     }
 }

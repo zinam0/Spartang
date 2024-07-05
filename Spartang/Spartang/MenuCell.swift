@@ -9,6 +9,10 @@ import UIKit
 
 //기본적으로 collectionview는 스크롤이 탑재되어있어서 여기서 구현하지 않아도됨
 class MenuCell: UICollectionViewCell {
+    
+    static let identifier = "MenuCell"
+    
+//    private let menuViewSize: CGFloat = 100
    
     private lazy var menuTitleLabel: UILabel = {
         let label = UILabel()
@@ -30,7 +34,7 @@ class MenuCell: UICollectionViewCell {
     
     private lazy var menuImage: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill // 비율유지하면서 전체화면 꽉 채우기 
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -61,19 +65,13 @@ class MenuCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            menuTitleLabel.topAnchor.constraint(equalTo: menuImage.bottomAnchor , constant: 8),
+            menuTitleLabel.topAnchor.constraint(equalTo: menuImage.bottomAnchor , constant: 1),
             menuTitleLabel.centerXAnchor.constraint(equalTo: menuImage.centerXAnchor),
-//            menuTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            menuTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            //menuTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            priceLabel.topAnchor.constraint(equalTo: menuTitleLabel.bottomAnchor , constant: 4),
+            priceLabel.topAnchor.constraint(equalTo: menuTitleLabel.bottomAnchor , constant: 1),
             priceLabel.centerXAnchor.constraint(equalTo: menuImage.centerXAnchor),
-//            priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            priceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            //priceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
 
     }
