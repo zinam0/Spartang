@@ -1,4 +1,3 @@
-//
 //  MenuView.swift
 //  Spartang
 //
@@ -9,10 +8,9 @@ import UIKit
 
 class MenuView: UIView, CartTableViewCellDelegate {
     
-    //해라님이 짠 코드와 연결시켜서 사용해야함
+    // 해라님이 짠 코드와 연결시켜서 사용해야함
     
     var currentCategory = "탕"
-    
     
     //    private var cartItems: [String: [Menu]] = [:]  // 장바구니 담기
     private var cartItems: [String: (menu: Menu, quantity: Int)] = [:]
@@ -26,9 +24,7 @@ class MenuView: UIView, CartTableViewCellDelegate {
         return layout
     }()
     
-    
-    
-    //반드시 lazy var 선언 해야함
+    // 반드시 lazy var 선언 해야함
     private lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero,  collectionViewLayout: flowLayout)
         view.isScrollEnabled = true
@@ -105,6 +101,7 @@ class MenuView: UIView, CartTableViewCellDelegate {
         
         setupClearAllButtonConstraints()
         clearAllButton.addTarget(self, action: #selector(clearAllButtonTapped), for: .touchUpInside)
+        checkoutButton.addTarget(self, action: #selector(checkoutButtonTapped), for: .touchUpInside) // Add target to checkout button
     }
     
     required init?(coder: NSCoder) {
@@ -162,10 +159,35 @@ class MenuView: UIView, CartTableViewCellDelegate {
     
     @objc private func clearAllButtonTapped() {
         cartItems.removeAll()
-        //updateTotalPrice()
+        updateTotalPrice()
         cartTableView.reloadData()
     }
     
+    @objc private func checkoutButtonTapped() {
+        let alert = UIAlertController(title: "주문 확인", message: "주문을 완료하시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
+            // Handle order confirmation here
+            self.cartItems.removeAll()
+            self.updateTotalPrice()
+            self.cartTableView.reloadData()
+        }))
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        
+        if let viewController = self.findViewController() {
+            viewController.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while responder != nil {
+            if let viewController = responder as? UIViewController {
+                return viewController
+            }
+            responder = responder?.next
+        }
+        return nil
+    }
     
     private func addToCart(_ item: Menu) {
         // 장바구니에 같은 카테고리의 항목이 없으면 새로 추가, 있으면 기존에 추가된 항목에 더함
@@ -186,20 +208,17 @@ class MenuView: UIView, CartTableViewCellDelegate {
     }
 }
 
-
 extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource {
-    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    //카테고리 갯수
+    // 카테고리 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //currentCategory 키값을 찾아서 탕 - 9
         return DataContainer.shared.menuItems[currentCategory]?.count ?? 0 // private 가져오는 방법
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuCell.identifier, for: indexPath) as? MenuCell else {
@@ -230,25 +249,20 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         let height = width * 1.1
         return CGSize(width: width, height: height)
     }
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-    //        return CGSize(width: self.frame.width, height: 40)
-    //    }
-    //
     
-    
-    //셀 부분 ⚠️
-    //if let filteredItems = DataContainer.shared.menuItems[currentCategory],
-    //   let menuItem = filteredItems[indexPath.item]{
+    // 셀 부분 ⚠️
+    // if let filteredItems = DataContainer.shared.menuItems[currentCategory],
+    //    let menuItem = filteredItems[indexPath.item]{
     //    cell.configure(menuItem)
     //    cell.backgroundColor = .white
-    //}
-    //return cell
-    //}
+    // }
+    // return cell
+    // }
     
-    //다시 정의 이전 깃 확인
-    //func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    // 다시 정의 이전 깃 확인
+    // func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     //    return CGSize(width: 80, height: 80) // 셀의 이미지 사이즈
-    //}
+    // }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let filteredItems = DataContainer.shared.menuItems[currentCategory]
@@ -274,7 +288,6 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         cell.delegate = self
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -309,9 +322,3 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         updateTotalPrice()
     }
 }
-
-
-
-
-
-
