@@ -299,11 +299,22 @@ extension MenuView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
     
     private func updateTotalPrice() {
-        let totalPrice = cartItems.reduce(0) { (result, item) -> Int in
+       
+//        let totalPrice = cartItems.reduce(0) { (result, item) -> Int in
+//            let (menuItem, quantity) = item.value
+//            return result + (menuItem.price * quantity)
+//        }
+//        let totalmenu = cartItems.reduce(0) { (result, item) -> Int in
+//            return result + item.value.quantity
+//        }
+        let (totalPrice, totalMenu) = cartItems.reduce((0, 0)) { (result, item) -> (Int, Int) in
+            let (currentTotalPrice, currentTotalMenu) = result
             let (menuItem, quantity) = item.value
-            return result + (menuItem.price * quantity)
+            return (currentTotalPrice + (menuItem.price * quantity), currentTotalMenu + quantity)
         }
-        totalPriceLabel.text = "총 메뉴 \(cartItems.count)개 결제: \(totalPrice)원"
+
+        //cartItems.count
+        totalPriceLabel.text = "총 메뉴 \(totalMenu)개 결제: \(totalPrice)원"
     }
     
     func didTapRemoveButton(on cell: CartCell) {
